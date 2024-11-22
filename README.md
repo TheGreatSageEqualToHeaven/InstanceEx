@@ -8,7 +8,7 @@ This module requires the `Full-Api-Dump.json` under itself as a module script ca
 
 - `InstanceEx.GetProperties(Object: Instance | string)` <div>Returns the properties of the passed instance or class name string.</div>
 
-- `InstanceEx.AreAssetsEqual(Asset1: Instance, Asset2: Instance, Settings: { IgnoredProperties: { string }?, CheckRelativePosition: bool?  }?)` <div>Compares the structural equality of two instances with optional settings, `IgnoredSettings` is an array of properties that will be ignored during comparison and `CheckRelativePosition` will compare the position and orientation of parts relative to their parents</div>
+- `InstanceEx.AreAssetsEqual(Asset1: Instance, Asset2: Instance, Settings: { IgnoredProperties: { string }?, CheckRelativePosition: bool?, Tolerance: double? }?)` <div>Compares the structural equality of two instances with optional settings, `IgnoredSettings` is an array of properties that will be ignored during comparison and `CheckRelativePosition` will compare the position and orientation of parts relative to their parents and `Tolerance` will be used as the relative position tolerance instead of the default `1e-5` tolerance.</div>
 
 e.g:
 
@@ -19,7 +19,8 @@ local AreEqualSettings = {
         "CFrame",
         "Rotation"
     },
-    CheckRelativePosition = true
+    CheckRelativePosition = true,
+    Tolerance = 1e-3
 }
 
 for _, OtherAsset in AssetsStore do
