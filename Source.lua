@@ -162,20 +162,33 @@ local function AreAssetsEqual(Asset1, Asset2, Settings)
 			end
 
 			if Settings and Settings.CheckRelativePosition then
-				local ParentPivot1 = GetPivot(Asset1)
-				local ParentPivot2 = GetPivot(Asset2)
-				local ChildPivot1 = GetPivot(Child1)
-				local ChildPivot2 = GetPivot(Child2)
+				local Child1Comparable = false
+				local Child2Comparable = false 
+				
+				if Child1:IsA("BasePart") or Child1:IsA("Model") then
+					Child1Comparable = true	
+				end
+				
+				if Child2:IsA("BasePart") or Child2:IsA("Model") then
+					Child2Comparable = true
+				end
+				
+				if Child1Comparable and Child2Comparable then
+					local ParentPivot1 = GetPivot(Asset1)
+					local ParentPivot2 = GetPivot(Asset2)
+					local ChildPivot1 = GetPivot(Child1)
+					local ChildPivot2 = GetPivot(Child2)
 
-				if ParentPivot1 and ParentPivot2 and ChildPivot1 and ChildPivot2 then
-					local RelativeCFrame1 = ParentPivot1:ToObjectSpace(ChildPivot1)
-					local RelativeCFrame2 = ParentPivot2:ToObjectSpace(ChildPivot2)
+					if ParentPivot1 and ParentPivot2 and ChildPivot1 and ChildPivot2 then
+						local RelativeCFrame1 = ParentPivot1:ToObjectSpace(ChildPivot1)
+						local RelativeCFrame2 = ParentPivot2:ToObjectSpace(ChildPivot2)
 
-					if not AreCFramesEqual(RelativeCFrame1, RelativeCFrame2) then
+						if not AreCFramesEqual(RelativeCFrame1, RelativeCFrame2, (Settings and Settings.Tolerance)) then
+							continue
+						end
+					else
 						continue
 					end
-				else
-					continue
 				end
 			end
 
